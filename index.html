@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Size Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .visual-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .box {
+            background-color: rgba(0, 123, 255, 0.5);
+            border: 2px solid #007BFF;
+            text-align: center;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Instructions Toggle Styling */
+        .instructions-container {
+            margin-top: 20px;
+        }
+        .toggle-heading {
+            cursor: pointer;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        .instructions-content {
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .instructions-content.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Design Size Calculator</h2>
+        
+        <!-- Instructions Section -->
+        <div class="instructions-container">
+            <h3 id="instructions-heading" class="toggle-heading">Instructions</h3>
+            <p>Click Instructions To Minimize</p> <!-- Added the additional text -->
+            <div id="instructions-content" class="instructions-content">
+                <p><strong>Please measure one side at a time (Length/Width)</strong></p>
+                <ol>
+                    <li>Enter the actual measurement of the product side (e.g., 20 inches).</li>
+                    <li>Enter the onscreen measurement of that product side (e.g., 20 cm).</li>
+                    <li>Enter the onscreen measurement of the design element side (e.g., 5 cm).</li>
+                    <li>Click "Calculate" to get the real-life measure of the design element side.</li>
+                </ol>
+
+                <p>The result will be displayed below the form, along with a simple visual representation of the product and design element scale.</p>
+                <p><strong>Important</strong>: If the actual measurement of the product side is in inches, you can use different units for the onscreen measurements (e.g., centimeters). <br><strong>However, both onscreen measurements (product side and design element) must be in the same unit</strong> for the calculation to work correctly.</p>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <div class="input-group">
+            <label for="actualSize">Actual Product Side (A)</label>
+            <input type="number" id="actualSize" placeholder="Enter actual size">
+        </div>
+        <div class="input-group">
+            <label for="screenSize">On-Screen Product Side (S)</label>
+            <input type="number" id="screenSize" placeholder="Enter screen size">
+        </div>
+        <div class="input-group">
+            <label for="elementSize">On-Screen Design Element (E)</label>
+            <input type="number" id="elementSize" placeholder="Enter element size">
+        </div>
+        <button onclick="calculateSize()">Calculate</button>
+        <p id="result"></p>
+        
+        <div class="visual-container">
+            <h3>Visual Representation</h3>
+            <div id="visualProduct" class="box" style="width: 200px; height: 200px;">Product Area</div>
+            <div id="visualElement" class="box" style="width: 50px; height: 50px; margin-top: 10px; background-color: rgba(255, 0, 0, 0.5); border-color: red;">Design Element</div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Instructions Visibility
+        document.getElementById('instructions-heading').addEventListener('click', function() {
+            const instructionsContent = document.getElementById('instructions-content');
+            instructionsContent.classList.toggle('hidden');
+        });
+
+        // Calculate Design Element Size
+        function calculateSize() {
+            let A = parseFloat(document.getElementById('actualSize').value);
+            let S = parseFloat(document.getElementById('screenSize').value);
+            let E = parseFloat(document.getElementById('elementSize').value);
+            let resultElement = document.getElementById('result');
+            let visualElement = document.getElementById('visualElement');
+            let visualProduct = document.getElementById('visualProduct');
+            
+            if (isNaN(A) || isNaN(S) || isNaN(E) || A <= 0 || S <= 0 || E <= 0) {
+                resultElement.textContent = "Please enter valid positive numbers.";
+                resultElement.style.color = "red";
+                return;
+            }
+            
+            let actualElementSize = A * (E / S);
+            resultElement.textContent = `Actual Design Element Size: ${actualElementSize.toFixed(2)}`;
+            resultElement.style.color = "black";
+            
+            // Adjust visual representation
+            let scaleFactor = 200 / S; // Scale product to fit 200px size
+            visualProduct.style.width = `${200}px`;
+            visualProduct.style.height = `${200}px`;
+            visualElement.style.width = `${E * scaleFactor}px`;
+            visualElement.style.height = `${E * scaleFactor}px`;
+        }
+    </script>
+</body>
+</html>
