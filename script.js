@@ -51,7 +51,19 @@ form.addEventListener("submit", function (e) {
   const side = sideSelect.value;
   const unit = unitSelect.value;
   const calc = (A * E) / S;
-  result.innerText = `ESTIMATED TRUE DESIGN ${side.toUpperCase()}: ${calc.toFixed(2)} ${unit}`;
+  let convertedValue;
+  let displayText;
+
+  if (unit === "cm") {
+    convertedValue = (calc / 2.54).toFixed(2);
+    displayText = `${calc.toFixed(2)} cm / ${convertedValue} in`;
+  } else {
+    convertedValue = (calc * 2.54).toFixed(2);
+    displayText = `${calc.toFixed(2)} in / ${convertedValue} cm`;
+  }
+
+  result.innerText = `ESTIMATED TRUE DESIGN ${side.toUpperCase()}: ${displayText}`;
+
 
   // Draw visual aid
   ctx.clearRect(0, 0, canvas.width, canvas.height);
