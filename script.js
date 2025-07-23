@@ -24,6 +24,10 @@ function updateLabels() {
 
   const inst = `1. Enter the actual measurement of the TRUE FULL ${sideCap} - typically found on product page in the Description or Size drop-down menu.\n2. Enter the onscreen measurement of that TRUE FULL PRODUCT ${sideCap} - taken with a ruler.\n3. Enter the onscreen measurement of the DESIGN ELEMENT'S ${sideCap} - taken with a ruler.\n4. Click "Calculate" to get the ESTIMATED TRUE DESIGN ${sideCap}.`;
   instructionText.innerText = inst;
+
+  document.getElementById("actual").value = "";
+  document.getElementById("screen").value = "";
+  document.getElementById("element").value = "";
 }
 unitSelect.addEventListener("change", updateLabels);
 sideSelect.addEventListener("change", updateLabels);
